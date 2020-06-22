@@ -1,0 +1,50 @@
+#自动调用 API
+name: Clockwork Auto Invoke API
+
+on: 
+  release:
+    types: [published]
+  push:
+    tags:
+    - 'v*'
+  #  branches: 
+  #    - master
+  schedule:
+    - cron: "0 */1 * * *"
+  watch:
+    types: [started]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Set up Python # 安装 python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Install requests # 安装 requests
+      run: |
+        pip install requests
+    - name: Pull Gist # 拉取 gist
+      env:
+        GIST_ID: ${{ secrets.GIST_ID }}
+        GIST_HTTPS: ${{ secrets.GIST_HTTPS_WITH_TOKEN }}
+      run: |
+        git clone $GIST_HTTPS
+    - name: Test Api # Api调用
+      env: 
+        GIST_ID: ${{ secrets.GIST_ID }}
+        GIST_TEXT: ${{ secrets.GIST_TEXT }}
+        CONFIG_ID: ${{ secrets.CONFIG_ID }}
+        CONFIG_KEY: ${{ secrets.CONFIG_KEY }}
+      run: | 
+        python main.py
+    - name: Push Gist # 上传新的 refresh_token 到 gist 
+      env:
+        GIST_ID: ${{ secrets.GIST_ID }}
+      run: |
+        cd $GIST_ID && echo `pwd` && git add . && git commit -m "update new refresh_token" && git push origin master
+        echo `pwd`
