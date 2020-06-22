@@ -67,7 +67,7 @@ def main_invoke():
 
     try:
         for api_url in api_list:
-            # time.sleep(random.randrange(2, 12))
+            time.sleep(random.randrange(2, 12))
             if req.get(api_url, headers=headers).status_code == 200:
                 print("调用成功: ", api_url)
             else:
@@ -79,11 +79,11 @@ def main_invoke():
         pass
 
 
-# for _ in range(random.randrange(3, 6)):
-#     time.sleep(60 * random.randrange(1, 8))
-#     main_invoke()
+for _ in range(random.randrange(3, 6)):
+    time.sleep(60 * random.randrange(1, 8))
+    main_invoke()
 
 # test
-for index in range(3):
-    print("轮数: ", index)
-    main_invoke()
+# for index in range(3):
+#     print("轮数: ", index)
+#     main_invoke()
