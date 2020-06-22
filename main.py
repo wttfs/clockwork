@@ -14,7 +14,6 @@ import random
 
 # 拼接存 refresh_token 的 gist 文件路径
 filepath = Path.cwd() / os.environ["GIST_ID"] / os.environ["GIST_TEXT"]
-print(filepath.is_file())
 
 api_list = [
     r'https://graph.microsoft.com/v1.0/me/drive/root',
@@ -38,7 +37,7 @@ def get_token(old_refresh_token):
         'refresh_token': old_refresh_token,
         'client_id': os.environ["CONFIG_ID"],
         'client_secret': os.environ["CONFIG_KEY"],
-        'redirect_uri': 'http://localhost:53682/'
+        'redirect_uri': 'http://localhost:42791/'
     }
     html = req.post(
         'https://login.microsoftonline.com/common/oauth2/v2.0/token',
@@ -68,7 +67,7 @@ def main_invoke():
 
     try:
         for api_url in api_list:
-            time.sleep(random.randrange(2, 12))
+            # time.sleep(random.randrange(2, 12))
             if req.get(api_url, headers=headers).status_code == 200:
                 print("调用成功: ", api_url)
             else:
@@ -80,10 +79,11 @@ def main_invoke():
         pass
 
 
-for _ in range(random.randrange(3, 6)):
-    if filepath.is_file():
-        with filepath.open(mode='w', encoding='utf-8') as file:
-            file.write(time.asctime(time.localtime(time.time())))
-    # time.sleep(60 * random.randrange(1, 8))
-    continue
+# for _ in range(random.randrange(3, 6)):
+#     time.sleep(60 * random.randrange(1, 8))
+#     main_invoke()
+
+# test
+for index in range(3):
+    print("轮数: ", index)
     main_invoke()
