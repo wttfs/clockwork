@@ -29,7 +29,6 @@ jobs:
       run: pip install requests
     - name: Pull Gist # 拉取 gist
       env:
-        GIST_ID: ${{ secrets.GIST_ID }}
         GIST_HTTPS: ${{ secrets.GIST_HTTPS_WITH_TOKEN }}
       run: git clone $GIST_HTTPS
     - name: Test Api # Api调用
