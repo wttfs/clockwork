@@ -5,10 +5,12 @@
 如下图所示，创建私有 gist，`****_token.txt` 这个名称自拟。  
 ![](https://user-images.githubusercontent.com/30190529/85358306-e9e9b580-b545-11ea-9a3c-43acba6736ae.png)  
 
-在项目的 Secrets 中，新建 **GIST_HTTPS_WITH_TOKEN**、**GIST_ID**、**GIST_TEXT** 三个机密。  
+在项目的 Secrets 中，创建 **GIST_HTTPS_WITH_TOKEN**、**GIST_ID**、**GIST_TEXT**、**CONFIG_ID**、**CONFIG_KEY** 五个机密。  
 1. **GIST_HTTPS_WITH_TOKEN** 存的是 gist 的 HTTPS 形式链接（`https://gist.github.com/****gist-id****.git`），以用于 git clone，需要注意的是该链接需要携带 GitHub 账号的 access token 信息，在个人的 `Settings/Developer settings/Personal access tokens` 中生成一个可以有创建 gist 权限的 token 即可。将 token 信息放到 gist 的 HTTPS 中，最后形式是 `https://****token****@gist.github.com/****gist-id****.git` 。  
 2. **GIST_ID** 存的是 gist 的 id 编号，即 `https://****token****@gist.github.com/****gist-id****.git` 中的 `****gist-id****` 部分。  
 3. **GIST_TEXT** 是 gist 中存放 token 的文件名称，包括文件后缀，如上图中的 `****_token.txt`。  
+4. **CONFIG_ID** 请直接填入你的应用 id 的值，而不需要像原项目中 `id=r'你的应用id'` 这样写，因为 main.py 中使用了 `os.environ` 从环境变量中直接读取。  
+5. **CONFIG_KEY** 与 4 同理，请直接填入你的应用机密的值，而不需要像原项目中的 `secret=r'你的应用机密'` 这样写。  
 
 ## gist 使用
 在 GitHub Actions 的配置文件中（本项目是 `.github/workflows/auto_invoke.yml`）中，通过 `git clone $GIST_HTTPS` 先将 gist 克隆下来（克隆下来的 gist 项目与 main.py 同目录），再在 `main.py` 中访问 `****_token.txt`。`****_token.txt` 的路径是通过当前路径、**GIST_ID** 和 **GIST_TEXT** 拼接而成的。    
