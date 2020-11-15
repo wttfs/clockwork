@@ -2,22 +2,24 @@
 name: Clockwork Auto Invoke API
 
 on: 
-  release:
-    types: [published]
-  push:
-    tags:
-    - 'v*'
+  #  release:
+  #     types: [published]
+  #  push:
+  #    tags:
+  #      - 'v*'
   #  branches: 
   #    - master
   schedule:
     - cron: "0 */6 * * *"
-  watch:
-    types: [started]
+  #  watch:
+  #    types: [started]
+  workflow_dispatch:
+    inputs:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
+    #  if: github.event.repository.owner.id == github.event.sender.id  # 自己点的 start
     steps:
     - name: Checkout
       uses: actions/checkout@master
